@@ -58,7 +58,7 @@ public class ExampleSteps {
     @Given("user enter login page")
     public void user_enter_login_page() {
         scenario.log("Entered login page");
-    }
+          }
 
     @When("user enters valid credentials")
     public void user_enters_valid_credentials() {
@@ -71,6 +71,7 @@ public class ExampleSteps {
     public void clicks_login_button() {
         LoginPage lp = new LoginPage(context);
         lp.loginButton.click();
+
     }
 
     @When("user adds first product to the cart")
