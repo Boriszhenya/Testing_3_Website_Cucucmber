@@ -43,7 +43,6 @@ public class DriverFactory {
                 return new EdgeDriver();
             }
         }
-
         throw new WebDriverException("WebDriver не выбран в конфигурационном файле configuration.properties");
     }
 }

@@ -9,7 +9,6 @@ public class ConfigurationReader {
     }
 
     private static Properties properties;
-
     static {
         try {
             String path = "src/test/resources/configuration.properties";

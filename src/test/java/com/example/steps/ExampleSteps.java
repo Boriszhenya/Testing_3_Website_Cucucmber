@@ -1,7 +1,7 @@
 package com.example.steps;
 
-import com.example.context.Book;
 import com.example.context.TestContext;
+import com.example.pages.CartPage;
 import com.example.pages.LoginPage;
 import com.example.pages.MainPage;
 import com.example.utils.ConfigurationReader;
@@ -15,8 +15,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.time.LocalDate;
-import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -58,7 +56,7 @@ public class ExampleSteps {
     @Given("user enter login page")
     public void user_enter_login_page() {
         scenario.log("Entered login page");
-          }
+    }
 
     @When("user enters valid credentials")
     public void user_enters_valid_credentials() {
@@ -71,7 +69,6 @@ public class ExampleSteps {
     public void clicks_login_button() {
         LoginPage lp = new LoginPage(context);
         lp.loginButton.click();
-
     }
 
     @When("user adds first product to the cart")
@@ -80,9 +77,30 @@ public class ExampleSteps {
         mp.addToCartButtons.getFirst().click();
     }
 
+    @When("user adds product with name {string} to the cart")
+    public void user_adds_product_with_name_to_the_cart(String expectedText) {
+        MainPage mp = new MainPage(context);
+        mp.addToCartByPartialName(expectedText);
+    }
+
     @Then("amount of products in the cart is {int}")
     public void amount_of_products_in_the_cart_is(Integer amount) {
         assertEquals(Integer.parseInt(new MainPage(context).shoppingCartLink.getText()), amount);
+    }
+
+    @Then("cart page opens")
+    public void cart_page_opens() {
+        CartPage cp = new CartPage(context);
+        MainPage mp = new MainPage(context);
+        mp.buttonCart.click();
+        assertTrue(cp.headerCartPage.isDisplayed());
+    }
+
+    @Then("check the product name in the cart")
+
+    public void check_the_product_name_in_the_cart() {
+        CartPage cp = new CartPage(context);
+        assertTrue(cp.nameProduct.getText().contains("Onesie"));
     }
 
     @Then("main page opens")
@@ -97,29 +115,6 @@ public class ExampleSteps {
         assertTrue(mp.footer.getText().contains(expectedText));
     }
 
-    @DataTableType
-    public Book bookEntryTransformer(Map<String, String> row) {
-
-        return new Book(
-                row.get("title"),
-                row.get("author"),
-                Integer.parseInt(row.get("yearOfPublishing"))
-        );
-    }
-
-    @Given("the following books")
-    public void theFollowingBooks(List<Book> books) {
-
-        for (Book book : books) {
-            System.out.printf(
-                    "'%s', published in %d, was written by %s\n",
-                    book.title,
-                    book.yearOfPublishing,
-                    book.author
-            );
-        }
-    }
-
     @When("user enters login {word} and password {string}")
     public void userEntersLoginAndPassword(String login, String password) {
         LoginPage lp = new LoginPage(context);
@@ -132,32 +127,5 @@ public class ExampleSteps {
         String actualText = new LoginPage(context).loginMessageContainer.getText();
         scenario.log(String.format("expectedText: %s;\r\nactualText: %s", expectedErrorMessage, actualText));
         assertTrue(actualText.contains(expectedErrorMessage));
-    }
-
-    @Given("^the following table$")
-    public void theFollowingTable(Map<String, String> dataTable) {
-        dataTable = processDataTable(dataTable);
-        scenario.log(dataTable.toString());
-    }
-
-    public Map<String, String> processDataTable(Map<String, String> dataTable) {
-        Map<String, String> processedData = new LinkedHashMap<>();
-        for (Map.Entry<String, String> entry : dataTable.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            processedData.put(key, processPlaceholder(value));
-        }
-        return processedData;
-    }
-
-    private String processPlaceholder(String placeholder) {
-        return switch (placeholder.toLowerCase()) {
-            case "today" -> LocalDate.now().toString();
-            case "randomnumber" -> String.valueOf(new Random().nextInt(1,100));
-            case "emptystring" -> "";
-            case "null" -> null;
-            case "textofelement" -> context.driver.findElement(By.className("login_logo")).getText();
-            default -> placeholder;
-        };
     }
 }
