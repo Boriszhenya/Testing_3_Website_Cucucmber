@@ -26,8 +26,8 @@ public class MainPage extends BasePage {
     @FindBy(xpath = "//ul[@id='tasks-list']/li/div/input")
     public List<WebElement> listButtonsCompletedTask;
 
-
-
+    @FindBy(xpath = "//div[text()='You have nothing task today!']")
+    public WebElement blockLabeledNoTasks;
 
 
     public void addOneTask(String newTask) {
