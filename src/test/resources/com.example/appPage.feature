@@ -1,78 +1,63 @@
-Feature: A test of the banking system
+Feature: а test of the TO-DO List App
 
   @positive
-  Scenario: Test_1 - check if there is an entry in the alert list
-    Given user is on the maim page
-    When the user will go to the Alert page
-    And will go to the Alert history tab
-    Then then the list will contain an entry with a specific date
+  Scenario: adding an entry to the To-Do List
+    Given user is on the main page
+    When a user adds the new task "Hello world!"
+    Then this entry "Hello world!" will appear on the To-Do list
 
-  @positive
-  Scenario: Test_2 - check if there is an entry in the alert list
-    Given user is on the maim page
-    When user will go to the Accounts Overview page
-    And will go to the Special Offers & Deals tab
-    Then  it have text  "Because you're a valued customer, we've selected some special offers just for you."
+  Scenario: deleting a task from the To-Do List
+    Given user is on the main page
+    And  added "Hello World" to the to-do list
+    When the user deletes the task "Hello world!"
+    Then the to-do list will be empty
 
-  @positive
-  Scenario: Test_3 - Check if there is a transaction in the list with a balance amount of $3,556.39
-    Given user is on the maim page
-    When user will go to the Accounts Overview page
-    And will go to the Customized Cash Rewards Visa Signature
-    And Go to the Accounts tab
-    Then  Check if there is a transaction with a balance amount of "$3,556.39" in the list.
+  Scenario: Adding 3 tasks at a time to the to-do list
+    Given user is on the main page
+    When a user adds a task list to the to-do list
+      | read a chapter of a programming book |
+      | do two tasks in Java                 |
+      | walk the dog                         |
+    Then are 3 tasks on the to-do list
 
-  @positive
-  Scenario: Test_4 - Check that there are 8 records in the table
-    Given user is on the maim page
-    When user will go to the Accounts Overview page
-    And will go to the Customized Cash Rewards Visa Signature
-    And will Go to the Statements & Documents tab
-    Then  Check that there are 8 records in the table
+  Scenario: deleting 1 out of 3 tasks in the to-do list
+    Given user is on the main page
+    When a user adds a task list to the to-do list
+      | read a chapter of a programming book |
+      | do two tasks in Java                 |
+      | walk the dog                         |
+    And user the user removes the 2nd task from the to-do list
+    Then 2 tasks remain in the to-do list
 
-  @positive
-  Scenario: Test_5 - Check that "Primary email" contains "Robin.Smith@bankofamerica.com".
-    Given user is on the maim page
-    When user will go to the Accounts Overview page
-    And will go to the Update Profile
-    Then  Check that Primary email contains "Robin.Smith@bankofamerica.com".
+  Scenario: deleting all tasks from the to-do list
+    Given user is on the main page
+    When a user adds a task list to the to-do list
+      | read a chapter of a programming book |
+      | do two tasks in Java                 |
+      | walk the dog                         |
+      | to watch a horror movie tonight      |
+    When  the user using the delete all tasks button deletes them all
+    Then the to-do list will be empty
 
-  @positive
-  Scenario: Test_6 - Checking who the money came from in the "Send Money" window
-    Given user is on the maim page
-    When user will go to the Go to Accounts Overview page
-    And user will go to the Pay Transfer page
-    When Click on the Zelle button
-    And In the window Send Money make a transfer
-    Then  Check  that in the new window there should be the inscription "    Adv Plus Banking 2322.56".
+  Scenario: changing the status of an uncompleted task to "completed" in the to-do list
+    Given user is on the main page
+    And a user adds the new task "Hello world!"
+    When the user marks the "Hello World!" task as completed
+    Then the "Hello world!" task has a status of completed
 
-  @positive
-  Scenario: Test_7 - Check if "Ready to use" appears on the "Rewards & Deals" page.
-    Given user is on the maim page
-    When user will go to the Go to Accounts Overview page
-    And user will go to the Rewards & Deals page
-    And Click on the plus sign on the Bayside block
-    Then  Check  if the inscription "Ready to use" has appeared
+  Scenario: changing the status of a completed task to " not completed" in the to-do list
+    Given user is on the main page
+    And a user adds the new task "Hello world!"
+    When a user marks a completed task "Hello World!" as not completed
+    Then the task "Hello world!" has a status of not completed
 
-  @positive
-  Scenario: Test_8 - Check if "Ready to use" appears on the "Rewards & Deals" page
-    Given user is on the maim page
-    When user will go to the Transfers page
-    And user will go to the Between my accounts at Bank of America
-    When user will Make a transfer in the amount of "1000"
-    And Click on the Transfer
-    Then  Check the text: "Your transfer is confirmed." has appeared
 
-  @positive
-  Scenario: Test_9 - Check whether the electricity bill has appeared in the "Activity" block
-    Given user is on the maim page
-    When user will go to the Go to Accounts Overview page
-    And user will go to the Pay Transfer page
-    Then  Check whether the electricity bill has appeared in the Activity block
-
-  @positive
-  Scenario: Test_10 - Check the "Security Center" tab
-    Given user is on the maim page
-    When user will go to the Go to Accounts Overview page
-    And user will go to the Pay Security Center tab
-    Then  Check if there is text in the box "Strengthen your Password now to help maximize defense against hackers."
+  Scenario: changing the status of 2 tasks as execution from the to-do list
+    Given user is on the main page
+    When a user adds a task list to the to-do list
+      | read a chapter of a programming book |
+      | do two tasks in Java                 |
+      | walk the dog                         |
+      | to watch a horror movie tonight      |
+    When user changes the status of the 1st and 3rd tasks as completed
+    Then 2 tasks remain in the to-do list
