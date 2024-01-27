@@ -1,13 +1,15 @@
 package com.example.pages;
 
-import com.example.context.TestContext;
+import com.example.context.Context;
 import org.openqa.selenium.support.PageFactory;
 
-public class BasePage {
-    TestContext context;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
-    public BasePage(TestContext context) {
-        this.context = context;
-        PageFactory.initElements(context.driver, this);
+public class BasePage {
+
+    public BasePage() {
+        PageFactory.initElements(Context.getDriver(), this);
     }
+
 }

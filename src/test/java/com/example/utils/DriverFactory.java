@@ -8,7 +8,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import io.cucumber.java.Scenario;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 
@@ -16,10 +15,12 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static com.example.context.Context.scenario;
+
 
 public class DriverFactory {
 
-    public static WebDriver get(Scenario scenario) throws URISyntaxException, MalformedURLException {
+    public static WebDriver get() throws URISyntaxException {
         String browser = ConfigurationReader.get("browser");
         WebDriver driver;
         switch (browser) {
@@ -34,12 +35,14 @@ public class DriverFactory {
                     options.addArguments("--disable-notifications");
                     options.addArguments("--lang=en-en");
                 }
-
-
                 if (ConfigurationReader.get("remote_server").toLowerCase().contains("true")) {
                     options.setCapability("platformName", ConfigurationReader.get("remote_server_platform"));
                     options.setCapability("se:name", scenario.getName());
-                    driver = new RemoteWebDriver(new URI(ConfigurationReader.get("remote_server_url")).toURL(), options);
+                    try {
+                        driver = new RemoteWebDriver(new URI(ConfigurationReader.get("remote_server_url")).toURL(), options);
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else {
                     driver = new ChromeDriver(options);
                 }
@@ -65,7 +68,11 @@ public class DriverFactory {
                 if (ConfigurationReader.get("remote_server").toLowerCase().contains("true")) {
                     options.setCapability("platformName", ConfigurationReader.get("remote_server_platform"));
                     options.setCapability("se:name", scenario.getName());
-                    driver = new RemoteWebDriver(new URI(ConfigurationReader.get("remote_server_url")).toURL(), options);
+                    try {
+                        driver = new RemoteWebDriver(new URI(ConfigurationReader.get("remote_server_url")).toURL(), options);
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else {
                     driver = new FirefoxDriver(options);
                 }
